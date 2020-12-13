@@ -1,2 +1,2 @@
 # Pomodoro
-Simple Pomodor Timer
+Simple Pomodoro Timer
