@@ -13,5 +13,9 @@ namespace PomodorTimer
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            Setup.Initialize();
+        }
     }
 }

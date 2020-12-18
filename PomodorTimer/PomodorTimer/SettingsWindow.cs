@@ -16,19 +16,28 @@ namespace PomodorTimer
     /// <summary>
     /// Interaction logic for SettingsPage.xaml
     /// </summary>
-    public partial class SettingsWindow : Window
+    public partial class SettingsWindow : UserControl
     {
-        private Lazy<Settings> _lazySettings = new Lazy<Settings>(Ioc.Resolve<Settings>());
-        private Settings Settings => _lazySettings.Value;
-
+        private ISettings settings;
         public SettingsWindow()
         {
             InitializeComponent();
+
+            settings = Ioc.Resolve<ISettings>();
+
+            Loaded += OnLoaded;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            Loaded -= OnLoaded;
+            WorkDurationBox.Text = settings.WorkingDuration.ToString();
+            RestDurationBox.Text = settings.RestingDuration.ToString();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            settings.IsShowingSettings = false;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -48,8 +57,8 @@ namespace PomodorTimer
                 return;
             }
 
-            Settings.SetDurations(workDuration, restDuration);
-            this.Close();
+            settings.SetDurations(workDuration, restDuration);
+            settings.IsShowingSettings = false;
         }
     }
 }

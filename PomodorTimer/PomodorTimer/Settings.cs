@@ -6,25 +6,32 @@ using System.Text;
 
 namespace PomodorTimer
 {
-    public class Settings : INotifyPropertyChanged
+    public class Settings : ISettings
     {
         private int workingDuration = 25;
         private int restingDuration = 5;
+        private bool isShowingSettings;
+
+        public bool IsShowingSettings
+        {
+            get { return isShowingSettings; }
+            set { isShowingSettings = value;
+                OnPropertyChanged(); }
+        }
 
         public int WorkingDuration
         {
             get { return workingDuration; }
             set { workingDuration = value;
-                OnPropertyChanged();
-            }
+                OnPropertyChanged(); }
         }
         public int RestingDuration
         {
             get { return restingDuration; }
             set { restingDuration = value;
-                OnPropertyChanged();
-            }
+                OnPropertyChanged(); }
         }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

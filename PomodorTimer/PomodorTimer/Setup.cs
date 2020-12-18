@@ -18,7 +18,7 @@ namespace PomodorTimer
 
         private static void RegisterSingletons()
         {
-            Ioc.RegisterSingleton<Settings, Settings>();
+            Ioc.RegisterSingleton<ISettings, Settings>();
         }
     }
 }

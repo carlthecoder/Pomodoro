@@ -9,7 +9,7 @@ namespace PomodorTimer
 {
     public partial class MainWindow : Window
     {
-        private Settings _settings;
+        private ISettings _settings;
 
         public static readonly DependencyProperty DurationProperty =
          DependencyProperty.Register("Duration", typeof(TimeSpan), typeof(MainWindow), new PropertyMetadata(new TimeSpan()));
@@ -26,7 +26,6 @@ namespace PomodorTimer
         {
             InitializeComponent();
 
-            Setup.Initialize();
             Loaded += OnLoaded;
             DataContext = this;
         }
@@ -35,7 +34,7 @@ namespace PomodorTimer
         {
             Loaded -= OnLoaded;
 
-            _settings = Ioc.Resolve<Settings>();
+            _settings = Ioc.Resolve<ISettings>();
             _settings.PropertyChanged += OnSettingsChanged;
 
             SetDuration(setWorkingDuration: true);
@@ -110,16 +109,14 @@ namespace PomodorTimer
 
         private void SetDuration(bool setWorkingDuration)
         {
-            var settings = Ioc.Resolve<Settings>();
-
             if (setWorkingDuration)
             {
-                var min = settings.WorkingDuration;
+                var min = _settings.WorkingDuration;
                 Duration = new TimeSpan(0, min, 00);
             }
             else
             {
-                var min = settings.RestingDuration;
+                var min = _settings.RestingDuration;
                 Duration = new TimeSpan(0, min, 00);
             }
         }
@@ -128,8 +125,6 @@ namespace PomodorTimer
         {
             App.Current.Shutdown();
         }
-
-
 
         private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -141,12 +136,17 @@ namespace PomodorTimer
             {
                 SetDuration(false);
             }
+
+            if (e.PropertyName == nameof(Settings.IsShowingSettings))
+            {                
+                settingsView.Visibility = _settings.IsShowingSettings ? Visibility.Visible : Visibility.Collapsed;
+                ContentGrid.Visibility = _settings.IsShowingSettings ? Visibility.Collapsed : Visibility.Visible;
+            }
         }
 
         private void OnSettingsClicked(object sender, RoutedEventArgs e)
         {
-            var settingsWindow = new SettingsWindow();
-            settingsWindow.Show();
+            _settings.IsShowingSettings = true;
         }
     }
 }
