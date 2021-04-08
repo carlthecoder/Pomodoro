@@ -15,6 +15,8 @@ namespace Pomodoro.UWP.Services
         private readonly IList<IPomodorObserver> _observers = new List<IPomodorObserver>();
         private TimeSpan _duration;
 
+        private PomState _state = PomState.Working;
+
         public TimeSpan Duration
         {
             get => _duration;
@@ -74,11 +76,31 @@ namespace Pomodoro.UWP.Services
 
             if (_duration == TimeSpan.Zero)
             {
-                var toastxml = @"<toast launch='args' scenario='alarm'>
+                if (_state == PomState.Working)
+                {
+                    ShowToast(true);
+                    SetDuration(setWorkingDuration: false);
+                    _state = PomState.Resting;
+                }
+                else
+                {
+                    ShowToast(false);
+                    SetDuration(setWorkingDuration: true);
+                    _state = PomState.Working;
+                }
+                
+            }
+        }
+
+        private void ShowToast(bool resting)
+        {
+            string text = resting ? "Have a rest" : "Start Working";
+         
+            var toastxml = $@"<toast launch='args' scenario='alarm'>
                                     <visual>
                                         <binding template='ToastGeneric'>
                                             <text>Well done!</text>
-                                            <text>Have a rest</text>
+                                            <text>{text}</text>
                                         </binding>
                                     </visual>
                                     <actions>
@@ -89,31 +111,31 @@ namespace Pomodoro.UWP.Services
 
                                     </actions>
                                 </toast>";
-                var doc = new Windows.Data.Xml.Dom.XmlDocument();
-                doc.LoadXml(toastxml);
-                var toast = new ToastNotification(doc);
-                var notifier = ToastNotificationManager.CreateToastNotifier();
-                notifier.Show(toast);
-                var data = toast.Data;
-            }
+            var doc = new Windows.Data.Xml.Dom.XmlDocument();
+            doc.LoadXml(toastxml);
+            var toast = new ToastNotification(doc);
+            var notifier = ToastNotificationManager.CreateToastNotifier();
+            notifier.Show(toast);
         }
 
         private void SetDuration(bool setWorkingDuration)
         {
             if (setWorkingDuration)
             {
-                //Duration = new TimeSpan(0, _settings.WorkingDuration, 00);
-                Duration = new TimeSpan(0, 0, 2);
+                Duration = new TimeSpan(0, _settings.WorkingDuration, 00);
+                //Duration = new TimeSpan(0, 0, 5);
             }
             else
             {
                 Duration = new TimeSpan(0, _settings.RestingDuration, 00);
+                //Duration = new TimeSpan(0, 0, 2);
             }
         }
 
-        private void DoSome()
+        private enum PomState
         {
-            Debug.WriteLine("jsdlkjflks");
+            Working,
+            Resting
         }
     }
 }
