@@ -38,7 +38,7 @@
                 Foreground="White"
                 />
 
-            <StackPanel
+            <!--<StackPanel
                 x:Name="ModePanel"
                 Grid.Row="2"
                 Orientation="Horizontal"
@@ -48,7 +48,7 @@
                 <Button Content="Working" Width="100" Margin="5" Click="OnWorkingClick" />
                 <Button Content="Resting" Width="100" Margin="5" Click="OnRestingClick"/>
 
-            </StackPanel>
+            </StackPanel>-->
 
             <TextBlock 
                 Grid.Row="3"

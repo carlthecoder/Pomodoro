@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace PomodorTimer
+namespace Pomodoro.UWP.Services
 {
     public class Settings : ISettings
     {
@@ -15,21 +17,30 @@ namespace PomodorTimer
         public bool IsShowingSettings
         {
             get { return isShowingSettings; }
-            set { isShowingSettings = value;
-                OnPropertyChanged(); }
+            set
+            {
+                isShowingSettings = value;
+                OnPropertyChanged();
+            }
         }
 
         public int WorkingDuration
         {
             get { return workingDuration; }
-            set { workingDuration = value;
-                OnPropertyChanged(); }
+            set
+            {
+                workingDuration = value;
+                OnPropertyChanged();
+            }
         }
         public int RestingDuration
         {
             get { return restingDuration; }
-            set { restingDuration = value;
-                OnPropertyChanged(); }
+            set
+            {
+                restingDuration = value;
+                OnPropertyChanged();
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -40,7 +51,7 @@ namespace PomodorTimer
             WorkingDuration = workingDuration;
         }
 
-        private void OnPropertyChanged([CallerMemberName]string propertyName = "")
+        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

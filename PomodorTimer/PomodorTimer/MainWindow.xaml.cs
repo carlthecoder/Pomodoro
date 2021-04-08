@@ -41,18 +41,17 @@ namespace PomodorTimer
 
             _timer = new Timer(1000);
             _timer.Elapsed += Elapsed;
-            
         }
 
-        private void OnWorkingClick(object sender, RoutedEventArgs e)
-        {
-            SetDuration(setWorkingDuration: true);
-        }
+        //private void OnWorkingClick(object sender, RoutedEventArgs e)
+        //{
+        //    SetDuration(setWorkingDuration: true);
+        //}
 
-        private void OnRestingClick(object sender, RoutedEventArgs e)
-        {
-            SetDuration(setWorkingDuration: false);
-        }
+        //private void OnRestingClick(object sender, RoutedEventArgs e)
+        //{
+        //    SetDuration(setWorkingDuration: false);
+        //}
 
         private void OnTimerStartClick(object sender, RoutedEventArgs e)
         {
@@ -96,7 +95,7 @@ namespace PomodorTimer
             _timer.Start();
             StartButton.Visibility = Visibility.Collapsed;
             StopButton.Visibility = Visibility.Visible;
-            ModePanel.IsEnabled = false;
+            //ModePanel.IsEnabled = false;
         }
 
         private void StopTimer()
@@ -104,7 +103,7 @@ namespace PomodorTimer
             _timer.Stop();
             StartButton.Visibility = Visibility.Visible;
             StopButton.Visibility = Visibility.Collapsed;
-            ModePanel.IsEnabled = true;
+            //ModePanel.IsEnabled = true;
         }
 
         private void SetDuration(bool setWorkingDuration)
@@ -138,7 +137,7 @@ namespace PomodorTimer
             }
 
             if (e.PropertyName == nameof(Settings.IsShowingSettings))
-            {                
+            {
                 settingsView.Visibility = _settings.IsShowingSettings ? Visibility.Visible : Visibility.Collapsed;
                 ContentGrid.Visibility = _settings.IsShowingSettings ? Visibility.Collapsed : Visibility.Visible;
             }
